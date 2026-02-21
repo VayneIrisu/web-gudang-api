@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 /* === DB === */
-require "config.php";
+require __DIR__ . "/../config.php";
 
 /* === READ JSON === */
 $data = json_decode(file_get_contents("php://input"), true);
