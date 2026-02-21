@@ -1,12 +1,28 @@
 <?php
-header("Content-Type: application/json");
+$host = getenv("MYSQLHOST");
+$db   = getenv("MYSQLDATABASE");
+$user = getenv("MYSQLUSER");
+$pass = getenv("MYSQLPASSWORD");
+$port = getenv("MYSQLPORT");
 
-echo json_encode([
-  "MYSQLHOST" => getenv("MYSQLHOST"),
-  "MYSQLPORT" => getenv("MYSQLPORT"),
-  "MYSQLDATABASE" => getenv("MYSQLDATABASE"),
-  "MYSQLUSER" => getenv("MYSQLUSER"),
-  "MYSQLPASSWORD_IS_SET" => getenv("MYSQLPASSWORD") ? "YES" : "NO",
-]);
+try {
+    $conn = new PDO(
+        "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4",
+        $user,
+        $pass,
+        [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
 
-exit;
+            // 🔥 WAJIB UNTUK RAILWAY
+            PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+        ]
+    );
+} catch (PDOException $e) {
+    http_response_code(500);
+    echo json_encode([
+        "error" => "DB connection failed",
+        "detail" => $e->getMessage() // sementara
+    ]);
+    exit;
+}
