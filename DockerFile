@@ -1,16 +1,18 @@
-FROM php:8.2-cli
+FROM php:8.2-apache
 
-# 🔥 Install OS dependency untuk MySQL
+# Install dependency yang dibutuhkan MySQL
 RUN apt-get update && apt-get install -y \
     default-mysql-client \
-    libmysqlclient-dev \
-    && docker-php-ext-install pdo pdo_mysql \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    libmariadb-dev \
+    && docker-php-ext-install pdo_mysql
 
-WORKDIR /app
-COPY . .
+# Aktifkan apache rewrite (optional tapi umum)
+RUN a2enmod rewrite
 
-EXPOSE 8080
+# Copy source code
+COPY . /var/www/html/
 
-CMD ["php", "-S", "0.0.0.0:8080", "-t", "."]
+# Permission
+RUN chown -R www-data:www-data /var/www/html
+
+EXPOSE 80
