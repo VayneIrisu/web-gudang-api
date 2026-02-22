@@ -1,24 +1,24 @@
 <?php
-/* === WAJIB UNTUK DEBUG === */
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+require __DIR__ . "/cors.php";
+require __DIR__ . "/../config.php"; //DB
 
-/* === CORS HEADER === */
-header("Access-Control-Allow-Origin: https://web-gudang-seven.vercel.app");
-header("Access-Control-Allow-Credentials: true");
-header("Access-Control-Allow-Headers: Content-Type");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-header("Content-Type: application/json");
+// /* === WAJIB UNTUK DEBUG === */
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 
-/* === HANDLE PREFLIGHT === */
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-  http_response_code(200);
-  exit;
-}
+// /* === CORS HEADER === */
+// header("Access-Control-Allow-Origin: https://web-gudang-seven.vercel.app");
+// header("Access-Control-Allow-Credentials: true");
+// header("Access-Control-Allow-Headers: Content-Type");
+// header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+// header("Content-Type: application/json");
 
-/* === DB === */
-require __DIR__ . "/../config.php";
+// /* === HANDLE PREFLIGHT === */
+// if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+//   http_response_code(200);
+//   exit;
+// }
 
 /* === READ JSON === */
 $data = json_decode(file_get_contents("php://input"), true);

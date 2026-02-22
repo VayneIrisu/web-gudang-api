@@ -1,19 +1,21 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+require __DIR__ . "/cors.php";
+require __DIR__ . "/../config.php"; //DB
+// ini_set('display_errors', 1);
+// error_reporting(E_ALL);
 
-header("Content-Type: application/json");
-header("Access-Control-Allow-Origin: https://web-gudang-seven.vercel.app");
-header("Access-Control-Allow-Methods: POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
+// header("Content-Type: application/json");
+// header("Access-Control-Allow-Origin: https://web-gudang-seven.vercel.app");
+// header("Access-Control-Allow-Methods: POST, OPTIONS");
+// header("Access-Control-Allow-Headers: Content-Type");
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit;
-}
+// if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+//     http_response_code(200);
+//     exit;
+// }
 
-/* === DB === */
-require __DIR__ . "/../config.php";
+// /* === DB === */
+// require __DIR__ . "/../config.php";
 
 $data = json_decode(file_get_contents("php://input"), true);
 
