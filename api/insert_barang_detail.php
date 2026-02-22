@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require __DIR__ . "/cors.php";
 require __DIR__ . "/../config.php"; //DB
 
