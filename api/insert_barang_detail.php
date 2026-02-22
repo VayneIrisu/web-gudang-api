@@ -1,5 +1,8 @@
 ﻿<?php
-header("Access-Control-Allow-Origin: *");
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+header("Access-Control-Allow-Origin: https://web-gudang-seven.vercel.app");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Max-Age: 3600");
@@ -10,7 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-include_once 'config.php';
+/* === DB === */
+require __DIR__ . "/../config.php";
 
 $data = json_decode(file_get_contents("php://input"), true);
 
