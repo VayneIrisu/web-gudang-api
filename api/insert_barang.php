@@ -5,12 +5,11 @@ require __DIR__ . "/../config.php"; //DB
 $data = json_decode(file_get_contents("php://input"), true);
 
 $noSlip = $data["noSlip"] ?? "";
-$tipePergerakan = $data["tipePergerakan"] ?? "";
 $jenisTransaksi = $data["jenisTransaksi"] ?? "";
-$valuationType = $data["valuationType"] ?? ""; // Maps to noKode from frontend
+$keterangan = $data["keterangan"] ?? "";
 $petugas = $data["petugas"] ?? "";
 
-if (!$noSlip || !$tipePergerakan || !$jenisTransaksi || !$valuationType || !$petugas) {
+if (!$noSlip || !$jenisTransaksi || !$keterangan || !$petugas) {
     http_response_code(400);
     echo json_encode(["message" => "Data tidak lengkap"]);
     exit;
@@ -26,10 +25,9 @@ try {
 
     // Pastikan nama tabel dan kolom sesuai dengan database Anda
     // Asumsi tabel: tbl_barang
-    // Kolom: id_barang, no_slip, tipe_pergerakan, jenis_transaksi, valuation_type, petugas
-    $sql = "INSERT INTO tbl_barang (id_barang, no_slip, tipe_pergerakan, jenis_transaksi, valuation_type, petugas) VALUES (?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO tbl_barang (id_barang, no_slip, jenis_transaksi, keterangan, petugas) VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->execute([$nextId, $noSlip, $tipePergerakan, $jenisTransaksi, $valuationType, $petugas]);
+    $stmt->execute([$nextId, $noSlip, $jenisTransaksi, $keterangan, $petugas]);
 
     echo json_encode(["message" => "Data berhasil disimpan", "id" => $nextId]);
 }

@@ -7,10 +7,8 @@ $data = json_decode(file_get_contents("php://input"), true);
 // Validation
 if (
 !isset($data['id_barang']) ||
-!isset($data['nomor_kode_7']) ||
 !isset($data['nomor_material']) ||
 !isset($data['jumlah']) ||
-!isset($data['harga_satuan']) ||
 !isset($data['jenis_transaksi'])
 ) {
     http_response_code(400);
@@ -20,10 +18,8 @@ if (
 
 try {
     $id_barang = $data['id_barang'];
-    $nomor_kode_7 = $data['nomor_kode_7'];
     $nomor_material = $data['nomor_material'];
     $jumlah = $data['jumlah'];
-    $harga_satuan = $data['harga_satuan'];
     $jenis_transaksi = $data['jenis_transaksi'];
     $tanggal_input = date('Y-m-d H:i:s'); // "tanggal_pergerakan terisi berdasarkan tanggal user menginputkan data"
 
@@ -60,11 +56,7 @@ try {
     $persediaan_awal = $rowStok ? (float)$rowStok['stok'] : 0;
 
     // 5. Defaults and Calculations
-    $persediaan_karantina = 0;
-    //$persediaan_awal = 0;
     $persediaan_akhir = $persediaan_awal + $mutasi_masuk - $mutasi_keluar;
-    $mata_uang = "Rupiah";
-    $total_harga = $jumlah * $harga_satuan;
     if ($persediaan_akhir < 0) {
         http_response_code(400);
         echo json_encode([
@@ -74,36 +66,26 @@ try {
         exit;
     }
 
-    // 6. Insert
+    // 6. Insert Barang Detail
     $query = "INSERT INTO tbl_barang_details (
                 id_detail, 
                 id_barang, 
                 no_slip, 
-                nomor_kode_7, 
-                nomor_material, 
-                persediaan_karantina, 
+                nomor_material,  
                 persediaan_awal, 
                 mutasi_masuk, 
                 mutasi_keluar, 
                 persediaan_akhir, 
-                mata_uang, 
-                total_harga, 
-                harga_satuan, 
                 tanggal_pergerakan
               ) VALUES (
                 :id_detail,
                 :id_barang,
                 :no_slip,
-                :nomor_kode_7,
                 :nomor_material,
-                :persediaan_karantina,
                 :persediaan_awal,
                 :mutasi_masuk,
                 :mutasi_keluar,
                 :persediaan_akhir,
-                :mata_uang,
-                :total_harga,
-                :harga_satuan,
                 :tanggal_pergerakan
               )";
 
@@ -113,16 +95,11 @@ try {
     $stmt->bindParam(":id_detail", $id_detail);
     $stmt->bindParam(":id_barang", $id_barang);
     $stmt->bindParam(":no_slip", $no_slip);
-    $stmt->bindParam(":nomor_kode_7", $nomor_kode_7);
     $stmt->bindParam(":nomor_material", $nomor_material);
-    $stmt->bindParam(":persediaan_karantina", $persediaan_karantina);
     $stmt->bindParam(":persediaan_awal", $persediaan_awal);
     $stmt->bindParam(":mutasi_masuk", $mutasi_masuk);
     $stmt->bindParam(":mutasi_keluar", $mutasi_keluar);
     $stmt->bindParam(":persediaan_akhir", $persediaan_akhir);
-    $stmt->bindParam(":mata_uang", $mata_uang);
-    $stmt->bindParam(":total_harga", $total_harga);
-    $stmt->bindParam(":harga_satuan", $harga_satuan);
     $stmt->bindParam(":tanggal_pergerakan", $tanggal_input);
 
     if ($stmt->execute()) {

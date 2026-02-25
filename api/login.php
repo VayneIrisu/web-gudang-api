@@ -2,24 +2,6 @@
 require __DIR__ . "/cors.php";
 require __DIR__ . "/../config.php"; //DB
 
-// /* === WAJIB UNTUK DEBUG === */
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
-
-// /* === CORS HEADER === */
-// header("Access-Control-Allow-Origin: https://web-gudang-seven.vercel.app");
-// header("Access-Control-Allow-Credentials: true");
-// header("Access-Control-Allow-Headers: Content-Type");
-// header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-// header("Content-Type: application/json");
-
-// /* === HANDLE PREFLIGHT === */
-// if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-//   http_response_code(200);
-//   exit;
-// }
-
 /* === READ JSON === */
 $data = json_decode(file_get_contents("php://input"), true);
 
@@ -53,7 +35,7 @@ if ($user["password"] !== $password) {
 $payload = [
   "id" => $user["id"],
   "username" => $user["username"],
-  "nama" => $user["nama"] ?? $user["username"], // Fallback to username if nama is empty
+  "name" => $user["name"] ?? $user["username"], // Fallback to username if nama is empty
   "akses" => [
     "inputMasuk" => (bool)$user["input_barang_masuk"],
     "inputKeluar" => (bool)$user["input_barang_keluar"]
