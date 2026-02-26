@@ -11,6 +11,7 @@ try {
         mm.satuan,
         bd.tanggal_pergerakan,
         bd.no_slip,
+        b.keterangan,
         b.petugas,
         bd.persediaan_awal,
         bd.mutasi_masuk,
