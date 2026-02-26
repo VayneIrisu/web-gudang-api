@@ -57,14 +57,6 @@ try {
 
     // 5. Defaults and Calculations
     $persediaan_akhir = $persediaan_awal + $mutasi_masuk - $mutasi_keluar;
-    if ($persediaan_akhir < 0) {
-        http_response_code(400);
-        echo json_encode([
-            "message" => "Persediaan akhir tidak boleh minus. Stok saat ini: " . $persediaan_awal,
-            "error" => true
-        ]);
-        exit;
-    }
 
     // 6. Insert Barang Detail
     $query = "INSERT INTO tbl_barang_details (
